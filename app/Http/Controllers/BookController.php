@@ -17,4 +17,13 @@ class BookController extends Controller
         $book = Book::create($request->all());
         return response()->json($book, 201);
     }
+
+    public function show(Request $request, $id)
+    {
+        $book = Book::findOrFail($id);
+
+        $comments = $book->comments;
+
+        return response()->json($comments);
+    }
 }
