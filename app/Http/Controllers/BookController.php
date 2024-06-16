@@ -3,14 +3,49 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator as Paginator;
 use App\Models\Book;
 
 class BookController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $books = Book::all();
-        return response()->json($books);
+        $data = $request->validate([
+            'page' => ['required', 'numeric'],
+        ]);
+        $page = $data['page'];
+        $offset = ($page - 1) * 12;
+        $books = Book::skip($offset)->take(12)->get();
+        $total = Book::count();
+        $pageCount = ceil($total / 12);
+        $response = [
+            'books' => $books,
+            'page' => $page,
+            'total' => $total,
+            'pageCount' => $pageCount
+        ];
+        return response()->json($response);
+    }
+
+    public function search(Request $request)
+    {
+        $data = $request->validate([
+            'search' => ['required', 'string'],
+            'page' => ['required', 'numeric'],
+        ]);
+        $page = $data['page'];
+        $search = $data['search'];
+        $offset = ($page - 1) * 12;
+        $books = Book::where('title', 'like', '%' . $search . '%')->skip($offset)->take(12)->get();
+        $total = Book::where('title', 'like', '%' . $search . '%')->count();
+        $pageCount = ceil($total / 12);
+        $response = [
+            'books' => $books,
+            'page' => $page,
+            'total' => $total,
+            'pageCount' => $pageCount
+        ];
+        return response()->json($response);
     }
     public function store(Request $request)
     {
