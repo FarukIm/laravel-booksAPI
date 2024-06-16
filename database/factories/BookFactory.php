@@ -20,6 +20,7 @@ class BookFactory extends Factory
             'description' => fake()->paragraph(),
             'publication_year' => fake()->year(),
             'cover_image' => fake()->imageUrl(),
+            'like_count' => 0,
         ];
     }
 }

@@ -17,6 +17,7 @@ return new class extends Migration {
             $table->text('description');
             $table->integer('publication_year');
             $table->string('cover_image');
+            $table->integer('like_count');
             $table->timestamps();
         });
     }

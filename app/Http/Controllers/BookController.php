@@ -18,12 +18,19 @@ class BookController extends Controller
         return response()->json($book, 201);
     }
 
-    public function show(Request $request, $id)
+    public function updateLikes(Request $request, $id)
     {
+        $like = $request->validate([
+            'add' => ['required', 'boolean']
+        ]);
         $book = Book::findOrFail($id);
 
-        $comments = $book->comments;
-
-        return response()->json($comments);
+        if ($like['add']) {
+            $book->like_count = $book->like_count + 1;
+        } else {
+            $book->like_count = $book->like_count - 1;
+        }
+        $book->save();
+        return response()->json($book, 201);
     }
 }

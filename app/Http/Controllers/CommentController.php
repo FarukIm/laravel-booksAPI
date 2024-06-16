@@ -14,8 +14,8 @@ class CommentController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'content' => 'required',
-            'book_id' => 'required',
+            'content' => ['required', 'string'],
+            'book_id' => ['required', 'numeric'],
         ]);
         if (Book::where('id', $data['book_id'])->exists()) {
             $comment = Comment::create($data);
@@ -28,22 +28,15 @@ class CommentController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Book $book)
+    public function show(Request $request, $id)
     {
-        if (Book::where('id', $book->id)->exists()) {
-            $comments = Comment::whereAll('id', $book->id)->get();
-            return response()->json($comments, 200);
+        $book = Book::findOrFail($id);
+
+        $comments = $book->comments;
+        if (count($comments) > 0) {
+            return response()->json($comments);
         } else {
-            return response()->json('Invalid book id', 400);
+            return response()->json(null, 204);
         }
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Comment $comment)
-    {
-
-
     }
 }
