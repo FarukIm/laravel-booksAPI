@@ -59,6 +59,9 @@ class BookController extends Controller
         if ($like['add']) {
             $book->like_count = $book->like_count + 1;
         } else {
+            if ($book->like_count - 1 < 0) {
+                return response()->json('Like cannot be lower than 0', 401);
+            }
             $book->like_count = $book->like_count - 1;
         }
         $book->save();
