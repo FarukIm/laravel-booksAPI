@@ -5,7 +5,7 @@ The frontend of this application is available on [here](https://github.com/Faruk
 
 ## Installation
 
--   Before installing make sure you laravel & its' dependencies installed on your machine, visit [the official documentation](https://laravel.com/docs/11.x/installation)
+-   Before installing make sure you php & composer installed on your machine, I recommend using [herd](https://herd.laravel.com/windows)
 
 -   To check out this project you first need to clone the repository:
 
@@ -37,3 +37,5 @@ php artisan migrate --seed
 ```
 php artisan serve
 ```
+
+If you have issues with this final step I recommend [editing your php.ini file](https://stackoverflow.com/questions/63955357/laravel-failed-to-listen-on-127-0-0-18000-reason)
