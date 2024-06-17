@@ -10,7 +10,7 @@ The frontend of this application is available on [here](https://github.com/Faruk
 -   To check out this project you first need to clone the repository:
 
 ```
-git clone https://github.com/FarukIm/vue-books.git
+git clone https://github.com/FarukIm/laravel-booksAPI
 ```
 
 -   Next navigate to the project directory using you preferred CLI and use the following command to install project dependencies:
