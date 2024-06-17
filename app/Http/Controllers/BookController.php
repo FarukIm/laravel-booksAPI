@@ -8,16 +8,15 @@ use App\Models\Book;
 
 class BookController extends Controller
 {
-    public function index(Request $request)
+    public function index($page)
     {
-        $data = $request->validate([
-            'page' => ['required', 'numeric'],
-        ]);
-        $page = $data['page'];
         $offset = ($page - 1) * 12;
         $books = Book::skip($offset)->take(12)->get();
         $total = Book::count();
         $pageCount = ceil($total / 12);
+        if ($page > $pageCount) {
+            return response()->json(['message' => 'Page not found'], 404);
+        }
         $response = [
             'books' => $books,
             'page' => $page,
@@ -27,18 +26,15 @@ class BookController extends Controller
         return response()->json($response);
     }
 
-    public function search(Request $request)
+    public function search($page, $search)
     {
-        $data = $request->validate([
-            'search' => ['required', 'string'],
-            'page' => ['required', 'numeric'],
-        ]);
-        $page = $data['page'];
-        $search = $data['search'];
         $offset = ($page - 1) * 12;
         $books = Book::where('title', 'like', '%' . $search . '%')->skip($offset)->take(12)->get();
         $total = Book::where('title', 'like', '%' . $search . '%')->count();
         $pageCount = ceil($total / 12);
+        if ($page > $pageCount) {
+            return response()->json(['message' => 'Page not found'], 404);
+        }
         $response = [
             'books' => $books,
             'page' => $page,
